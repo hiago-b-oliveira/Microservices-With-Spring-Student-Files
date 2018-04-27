@@ -1,10 +1,9 @@
 package io.hiago.lab4subject.controller;
 
+import io.hiago.lab4subject.dao.SubjectClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,11 +11,14 @@ import java.util.List;
 @RestController
 public class SentenceController {
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
+//    @Autowired
+//    private DiscoveryClient discoveryClient;
+
+//    @Autowired
+//    private RestTemplate restTemplate;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private SubjectClient subjectClient;
 
     @GetMapping("/sentence")
     public String getSentence() {
@@ -31,7 +33,10 @@ public class SentenceController {
 //                .map(si -> si.get(0).getUri());
 
 //        return (uri.isPresent()) ? (new RestTemplate()).getForObject(uri.get() + "/word", String.class) : null;
-        return restTemplate.getForObject("http://" + service + "/word", String.class);
+
+//        return restTemplate.getForObject("http://" + service + "/word", String.class);
+
+        return subjectClient.getWord();
     }
 
 }
