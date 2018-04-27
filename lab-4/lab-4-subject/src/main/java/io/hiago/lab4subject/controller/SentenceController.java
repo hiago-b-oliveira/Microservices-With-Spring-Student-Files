@@ -6,16 +6,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class SentenceController {
 
     @Autowired
     private DiscoveryClient discoveryClient;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping("/sentence")
     public String getSentence() {
@@ -25,11 +26,12 @@ public class SentenceController {
     }
 
     public String getWord(String service) {
-        Optional<URI> uri = Optional.ofNullable(this.discoveryClient.getInstances(service))
-                .filter(si -> !si.isEmpty())
-                .map(si -> si.get(0).getUri());
+//        Optional<URI> uri = Optional.ofNullable(this.discoveryClient.getInstances(service))
+//                .filter(si -> !si.isEmpty())
+//                .map(si -> si.get(0).getUri());
 
-        return (uri.isPresent()) ? (new RestTemplate()).getForObject(uri.get() + "/word", String.class) : null;
+//        return (uri.isPresent()) ? (new RestTemplate()).getForObject(uri.get() + "/word", String.class) : null;
+        return restTemplate.getForObject("http://" + service + "/word", String.class);
     }
 
 }
